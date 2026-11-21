@@ -1,0 +1,6 @@
+{
+  "name": "ASRbox",
+  "description": "Приватное кроссплатформенное рабочее пространство: заметки с таблицами, изолированные сейфы паролей, календарь, зашифрованные группы, синхронизация и инструменты продуктивности для Windows и Android.",
+  "requestFramePermissions": ["microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
