@@ -1,0 +1,47 @@
+name: Build ASRbox (Windows & Android)
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main, master ]
+
+jobs:
+  build_android:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+      - name: Generate missing platform runner files
+        run: flutter create --platforms=android --org com.asrbox --project-name asrbox .
+      - name: Fetch dependencies
+        run: flutter pub get
+      - name: Build Android Release APK
+        run: flutter build apk --release
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ASRbox-Android-APK
+          path: build/app/outputs/flutter-apk/app-release.apk
+
+  build_windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+      - name: Generate missing Windows runner files
+        run: flutter create --platforms=windows --org com.asrbox --project-name asrbox .
+      - name: Fetch dependencies
+        run: flutter pub get
+      - name: Build Windows Release (Portable)
+        run: flutter build windows --release
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ASRbox-Windows-Portable
+          path: build/windows/x64/runner/Release/
